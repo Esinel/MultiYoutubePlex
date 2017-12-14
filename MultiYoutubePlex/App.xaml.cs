@@ -13,5 +13,6 @@ namespace MultiYoutubePlex
     /// </summary>
     public partial class App : Application
     {
+
     }
 }

@@ -24,5 +24,16 @@ namespace MultiYoutubePlex
         {
             InitializeComponent();
         }
+
+
+        private void DownloadButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (VideoLinkTextBox.Text == "")
+            {
+                MessageBox.Show(ErrorMessage);
+            }
+        }
+
+
     }
 }
