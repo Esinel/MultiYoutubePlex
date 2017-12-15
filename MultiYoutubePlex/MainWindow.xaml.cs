@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MultiYoutubePlex.Enums;
+using MultiYoutubePlex.Helpers;
 
 namespace MultiYoutubePlex
 {
@@ -20,19 +22,31 @@ namespace MultiYoutubePlex
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static ProgressBarWrapper CurrentProgress = Downloader.CurrentDownloadProgress;
+
         public MainWindow()
         {
             InitializeComponent();
+            CurrentProgress.PropertyChanged += (sender, args) => DownloadProgress.Value += CurrentProgress.CurrentProgress;
         }
-
 
         private void DownloadButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (VideoLinkTextBox.Text == "")
             {
-                MessageBox.Show(ErrorMessage);
+                MessageBox.Show("NO LINK BRO!!!");
             }
+
+            var downloadType = VideoRadioButton.IsEnabled ? DownloadType.Video : DownloadType.Audio;
+
+            Downloader.Download(VideoLinkTextBox.Text, SaveLocationTextBox.Text, Resolution.FullHD, downloadType);
+
+
         }
+
+
+
+
 
 
     }

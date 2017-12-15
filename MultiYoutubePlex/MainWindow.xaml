@@ -19,6 +19,7 @@
         <RadioButton x:Name="AudioRadioButton" GroupName="DownloadTypeRadioGroup" Content="Audio" HorizontalAlignment="Left" Margin="10,153,0,0" VerticalAlignment="Top" Height="15" Width="51"/>
         <Label x:Name="label" Content="Download Type" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top" Width="113" Height="35"/>
         <Label x:Name="VideoLinkLabel_Copy" Content="Save location:" HorizontalAlignment="Left" Margin="10,47,0,0" VerticalAlignment="Top" Height="26" Width="89"/>
-        <TextBox x:Name="VideoLinkTextBox_Copy" HorizontalAlignment="Left" Height="20" Margin="104,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="364"/>
+        <TextBox x:Name="SaveLocationTextBox" HorizontalAlignment="Left" Height="20" Margin="104,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="364"/>
+        <ProgressBar Name="DownloadProgress"  HorizontalAlignment="Left" Height="11" Margin="49,45,0,0" Grid.Row="1" VerticalAlignment="Top" Width="366"/>
     </Grid>
 </Window>
