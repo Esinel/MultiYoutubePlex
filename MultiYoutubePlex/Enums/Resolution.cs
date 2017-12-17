@@ -4,7 +4,7 @@ namespace MultiYoutubePlex.Enums
 {
     
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    internal enum Resolution
+    public enum Resolution
     {
         FullHD = 1080,
         HD = 720,

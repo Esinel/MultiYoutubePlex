@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using MultiYoutubePlex.Enums;
@@ -11,38 +10,69 @@ using YoutubeExtractor;
 
 namespace MultiYoutubePlex
 {
-    internal static class Downloader
+    public static class Downloader
     {
         public static ProgressBarWrapper CurrentDownloadProgress = new ProgressBarWrapper();
         public static ProgressBarWrapper CurrentAudioConversionProgress = new ProgressBarWrapper();
 
-        public static void Download(string videoLink, string saveLocation,Resolution resolution, DownloadType downloadType = DownloadType.Video)
+        public static void Download(string videoLink, string saveLocation, Resolution resolution, DownloadType downloadType = DownloadType.Video, UrlType urlType = UrlType.Video)
         {
 
-            Task task; 
+            Task task;
             switch (downloadType)
             {
                 case DownloadType.Audio:
-                    task = new Task(() => DownloadVideo(videoLink, saveLocation,resolution),TaskCreationOptions.LongRunning);
-                    task.Start();
+                    //task = new Task(() => DownloadAudio(videoLink, saveLocation), TaskCreationOptions.LongRunning);
+                    //task.Start();
+                    DownloadAudio(videoLink, saveLocation);
                     break;
                 case DownloadType.Video:
-                    task = new Task(() =>  DownloadVideo(videoLink, saveLocation,resolution), TaskCreationOptions.LongRunning);
-                    task.Start();
+                    //task = new Task(() => DownloadVideo(videoLink, saveLocation, resolution), TaskCreationOptions.LongRunning);
+                    //task.Start();
+                    DownloadVideo(videoLink, saveLocation, resolution);
                     break;
             }
         }
-        
+
         #region Downloaders
-        private static void DownloadVideo(string videoLink, string saveLocation, Resolution resolution)
+        public static void DownloadFromPlaylist(string playlistUrl,
+            string saveLocation,
+            Resolution resolution,
+            DownloadType downloadType = DownloadType.Video)
+        {
+            var videoUrls = PlaylistParser.ParsePlayList(playlistUrl);
+            Task task;
+            foreach (var url in videoUrls)
+            {
+                switch (downloadType)
+                {
+                    case DownloadType.Audio:
+                        //task = new Task(() => DownloadAudio(videoLink, saveLocation), TaskCreationOptions.LongRunning);
+                        //task.Start();
+                        DownloadAudio(url, saveLocation);
+                        break;
+                    case DownloadType.Video:
+                        //task = new Task(() => DownloadVideo(videoLink, saveLocation, resolution), TaskCreationOptions.LongRunning);
+                        //task.Start();
+                        DownloadVideo(url, saveLocation, resolution);
+                        break;
+                }
+            }
+        }
+
+        public static void DownloadVideo(string videoLink, string saveLocation, Resolution resolution)
         {
 
 
-            VideoInfo video = GetVideo(videoLink, resolution);
+            var video = GetVideo(videoLink, resolution);
 
             /*
              * If the video has a decrypted signature, decipher it
              */
+            if (video.RequiresDecryption)
+            {
+                DownloadUrlResolver.DecryptDownloadUrl(video);
+            }
 
 
             /*
@@ -60,7 +90,7 @@ namespace MultiYoutubePlex
                     RemoveIllegalPathCharacters(video.Title) + video.VideoExtension));
 
             // Register the ProgressChanged event and print the current progress
-            videoDownloader.DownloadProgressChanged += (sender, args) => CurrentDownloadProgress.CurrentProgress += args.ProgressPercentage;
+            videoDownloader.DownloadProgressChanged += (sender, args) => CurrentDownloadProgress.CurrentProgress = args.ProgressPercentage;
 
             /*
              * Execute the video downloader.
@@ -69,8 +99,8 @@ namespace MultiYoutubePlex
             videoDownloader.Execute();
         }
 
-        private static void DownloadAudio(string videoLink, string saveLocation)
-        { 
+        public static void DownloadAudio(string videoLink, string saveLocation)
+        {
 
             var videoInfos = DownloadUrlResolver.GetDownloadUrls(videoLink, false);
             VideoInfo video = videoInfos
@@ -110,7 +140,7 @@ namespace MultiYoutubePlex
              * For GUI applications note, that this method runs synchronously.
              */
             audioDownloader.Execute();
-        } 
+        }
         #endregion
         #region Helpers
 
@@ -119,10 +149,10 @@ namespace MultiYoutubePlex
             var videoInfos = DownloadUrlResolver.GetDownloadUrls(videoLink, false);
 
             var videoResolution = (int)resolution;
-            VideoInfo video = videoInfos
+            var video = videoInfos
                 .FirstOrDefault(info => info.Resolution == videoResolution);
 
-            if (video.RequiresDecryption)
+            if (video != null && video.RequiresDecryption)
             {
                 DownloadUrlResolver.DecryptDownloadUrl(video);
             }
@@ -135,7 +165,7 @@ namespace MultiYoutubePlex
             var regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
             var r = new Regex($"[{Regex.Escape(regexSearch)}]");
             return r.Replace(path, "");
-        } 
+        }
         #endregion
     }
 }

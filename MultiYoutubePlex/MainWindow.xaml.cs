@@ -22,12 +22,14 @@ namespace MultiYoutubePlex
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static ProgressBarWrapper CurrentProgress = Downloader.CurrentDownloadProgress;
+        public static ProgressBarWrapper Progress;
 
         public MainWindow()
         {
             InitializeComponent();
-            CurrentProgress.PropertyChanged += (sender, args) => DownloadProgress.Value += CurrentProgress.CurrentProgress;
+            Progress = Downloader.CurrentDownloadProgress;
+            DataContext = Progress;
+
         }
 
         private void DownloadButton_OnClick(object sender, RoutedEventArgs e)
@@ -35,19 +37,30 @@ namespace MultiYoutubePlex
             if (VideoLinkTextBox.Text == "")
             {
                 MessageBox.Show("NO LINK BRO!!!");
+                return;
             }
 
             var downloadType = VideoRadioButton.IsEnabled ? DownloadType.Video : DownloadType.Audio;
 
-            Downloader.Download(VideoLinkTextBox.Text, SaveLocationTextBox.Text, Resolution.FullHD, downloadType);
+            try
+            {
+                if (PlaylistRadioButton.IsEnabled)
+                {
+                    Downloader.DownloadFromPlaylist(VideoLinkTextBox.Text, SaveLocationTextBox.Text, Resolution.HD,
+                        downloadType);
+                }
+                else
+                {
+                    Downloader.Download(VideoLinkTextBox.Text, SaveLocationTextBox.Text, Resolution.HD, downloadType);
+                }
+
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
 
 
         }
-
-
-
-
-
-
     }
 }

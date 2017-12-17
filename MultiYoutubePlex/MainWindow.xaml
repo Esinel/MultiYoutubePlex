@@ -5,21 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MultiYoutubePlex"
         mc:Ignorable="d"
-        Title="YouMultiPlexTube"  Height="350" Width="550">
+        Title="YouMultiPlexTube"  Height="470.08" Width="487.633">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="212*"/>
-            <RowDefinition Height="107*"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button x:Name="DownloadButton" Click="DownloadButton_OnClick" Content="Download" HorizontalAlignment="Right" Margin="0,153,74,0"  VerticalAlignment="Top" Width="75" Height="20"/>
-        <Label x:Name="VideoLinkLabel" Content="Video link:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="70"/>
-        <TextBox x:Name="VideoLinkTextBox" HorizontalAlignment="Left" Height="20" Margin="104,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="364"/>
+        <Button x:Name="DownloadButton" Click="DownloadButton_OnClick" Content="Download" HorizontalAlignment="Right" Margin="0,360,10,0"  VerticalAlignment="Top" Width="87" Height="20"/>
+        <Label x:Name="VideoLinkLabel" Content="URL" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="70"/>
+        <TextBox x:Name="VideoLinkTextBox" IsEnabled="{Binding PlaylistLinkTextBox.Has}" HorizontalAlignment="Left" Height="26" Margin="104,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="364"/>
 
-        <RadioButton x:Name="VideoRadioButton"  GroupName="DownloadTypeRadioGroup" Content="Video" HorizontalAlignment="Left" Margin="10,133,0,0" VerticalAlignment="Top" Height="15" Width="85"/>
-        <RadioButton x:Name="AudioRadioButton" GroupName="DownloadTypeRadioGroup" Content="Audio" HorizontalAlignment="Left" Margin="10,153,0,0" VerticalAlignment="Top" Height="15" Width="51"/>
-        <Label x:Name="label" Content="Download Type" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top" Width="113" Height="35"/>
-        <Label x:Name="VideoLinkLabel_Copy" Content="Save location:" HorizontalAlignment="Left" Margin="10,47,0,0" VerticalAlignment="Top" Height="26" Width="89"/>
-        <TextBox x:Name="SaveLocationTextBox" HorizontalAlignment="Left" Height="20" Margin="104,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="364"/>
-        <ProgressBar Name="DownloadProgress"  HorizontalAlignment="Left" Height="11" Margin="49,45,0,0" Grid.Row="1" VerticalAlignment="Top" Width="366"/>
+        <RadioButton x:Name="VideoRadioButton" IsChecked="True" GroupName="DownloadTypeRadioGroup" Content="Video" HorizontalAlignment="Left" Margin="264,132,0,0" VerticalAlignment="Top" Height="15" Width="85"/>
+        <RadioButton x:Name="AudioRadioButton" GroupName="DownloadTypeRadioGroup" Content="Audio" HorizontalAlignment="Left" Margin="264,167,0,0" VerticalAlignment="Top" Height="15" Width="51"/>
+        <Label x:Name="label" Content="Download Type" HorizontalAlignment="Left" Margin="264,92,0,0" VerticalAlignment="Top" Width="113" Height="35"/>
+        <Label x:Name="VideoLinkLabel_Copy" Content="Save location:" HorizontalAlignment="Left" Margin="10,228,0,0" VerticalAlignment="Top" Height="26" Width="89"/>
+        <TextBox x:Name="SaveLocationTextBox" HorizontalAlignment="Left" Height="26" Margin="104,228,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="364"/>
+        <ProgressBar Name="DownloadProgress" Maximum="100.00" Value="{Binding CurrentProgress}" HorizontalAlignment="Left" Height="13" Margin="10,385,0,0" VerticalAlignment="Top" Width="458"/>
+        <RadioButton x:Name="PlaylistRadioButton"  GroupName="LinkTypeGroup" Content="Playlist" HorizontalAlignment="Left" Margin="14,156,0,237" Width="85" RenderTransformOrigin="-0.261,0.894"/>
+        <RadioButton x:Name="VideoTypeRadioButton" IsChecked="True" GroupName="LinkTypeGroup" Content="Video" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top" Height="15" Width="51"/>
+        <Label x:Name="label_Copy" Content="Link Type&#xD;&#xA;" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="113" Height="35"/>
     </Grid>
 </Window>

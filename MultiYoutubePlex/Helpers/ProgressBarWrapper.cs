@@ -15,7 +15,7 @@ namespace MultiYoutubePlex.Helpers
             get => _currentProgress;
             set {
                 _currentProgress = value;
-                OnPropertyChanged("Soba");
+                OnPropertyChanged(nameof(CurrentProgress));
             }
         }
 
