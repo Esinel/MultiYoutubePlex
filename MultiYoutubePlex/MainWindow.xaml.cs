@@ -41,26 +41,16 @@ namespace MultiYoutubePlex
             }
 
             var downloadType = VideoRadioButton.IsEnabled ? DownloadType.Video : DownloadType.Audio;
-
-            try
+            
+            if (PlaylistRadioButton.IsEnabled)
             {
-                if (PlaylistRadioButton.IsEnabled)
-                {
-                    Downloader.DownloadFromPlaylist(VideoLinkTextBox.Text, SaveLocationTextBox.Text, Resolution.HD,
-                        downloadType);
-                }
-                else
-                {
-                    Downloader.Download(VideoLinkTextBox.Text, SaveLocationTextBox.Text, Resolution.HD, downloadType);
-                }
-
+                Downloader.DownloadFromPlaylist(VideoLinkTextBox.Text, SaveLocationTextBox.Text, Resolution.HD,
+                    downloadType);
             }
-            catch (Exception exception)
+            else
             {
-                MessageBox.Show(exception.Message);
+                Downloader.Download(VideoLinkTextBox.Text, SaveLocationTextBox.Text, Resolution.HD, downloadType);
             }
-
-
         }
     }
 }

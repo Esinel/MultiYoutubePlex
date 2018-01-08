@@ -3,50 +3,50 @@
 # Author: Mitke
 # Email: miticm30@gmail.com
 # Description: Parse URLs in Youtube User's Playlist and returns new line delimited string
- 
+ #Python 2.7
 import re
-import urllib.request
-import urllib.error
+import urllib2, urllib
+import urllib2, urllib
 import sys
 import time
  
 def crawl(url):
-    sTUBE = ''
-    cPL = ''
+    sTUBE = u''
+    cPL = u''
     amp = 0
     final_url = []
 
-    if 'http' not in url:
-        url = 'http://' + url
+    if u'http' not in url:
+        url = u'http://' + url
 
-    if 'list=' in url:
-        eq = url.rfind('=') + 1
+    if u'list=' in url:
+        eq = url.rfind(u'=') + 1
         cPL = url[eq:]
             
     else:
-        print('Incorrect Playlist.')
+        print u'Incorrect Playlist.'
         exit(1)
     
     try:
-        yTUBE = urllib.request.urlopen(url).read()
-        sTUBE = str(yTUBE)
-    except urllib.error.URLError as e:
-        print(e.reason)
+        yTUBE = urllib2.urlopen(url).read()
+        sTUBE = unicode(yTUBE)
+    except urllib2.URLError, e:
+        print e.reason
     
-    tmp_mat = re.compile(r'watch\?v=\S+?list=' + cPL)
+    tmp_mat = re.compile(ur'watch\?v=\S+?list=' + cPL)
     mat = re.findall(tmp_mat, sTUBE)
  
     if mat:
           
         for PL in mat:
-            yPL = str(PL)
-            if '&' in yPL:
-                yPL_amp = yPL.index('&')
-            final_url.append('http://www.youtube.com/' + yPL[:yPL_amp])
+            yPL = unicode(PL)
+            if u'&' in yPL:
+                yPL_amp = yPL.index(u'&')
+            final_url.append(u'http://www.youtube.com/' + yPL[:yPL_amp])
  
-        return list(set(final_url)).join('\n');
+        return list(set(final_url)).join(u'\n');
         
     else:
-        print('No videos found.')
+        print u'No videos found.'
         exit(1)
         

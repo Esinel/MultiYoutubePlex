@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+
 namespace MultiYoutubePlex.Helpers
 {
     public static class PlaylistParser
